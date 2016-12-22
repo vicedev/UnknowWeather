@@ -21,6 +21,7 @@ import com.vice.unknowweather.bean.City;
 import com.vice.unknowweather.bean.Weather;
 import com.vice.unknowweather.custom.DayForecastView;
 import com.vice.unknowweather.custom.HourForecastView;
+import com.vice.unknowweather.custom.NowView;
 import com.vice.unknowweather.custom.SuggestionView;
 import com.vice.unknowweather.global.Constants;
 import com.vice.unknowweather.model.CityWeatherModel;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private HourForecastView hfView;//显示每小时的天气
     private DayForecastView dfView;//显示后面几天的天气
     private SuggestionView suggestionView;//显示生活建议
+    private NowView nowView;//显示当前天气
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         hfView = (HourForecastView) findViewById(R.id.hf_view);
         dfView= (DayForecastView) findViewById(R.id.df_view);
         suggestionView = (SuggestionView) findViewById(R.id.suggestion_view);
+        nowView= (NowView) findViewById(R.id.now_view);
 
         ibCityManage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,16 +129,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showWeather(Weather weather) {
+        showNow(weather);
         showHourForecast(weather);
         showDayForecast(weather);
         showSuggestion(weather);
     }
 
-    //显示生活简易
+    //显示当前天气
+    private void showNow(Weather weather) {
+        Weather.HeWeather5Bean.NowBean now = weather.getHeWeather5().get(0).getNow();
+        String loc = weather.getHeWeather5().get(0).getBasic().getUpdate().getLoc();
+        if (now!=null){
+            nowView.setVisibility(View.VISIBLE);
+            nowView.setNow(now,loc);
+        }else{
+            nowView.setVisibility(View.GONE);
+        }
+    }
+
+    //显示生活建议
     private void showSuggestion(Weather weather) {
         Weather.HeWeather5Bean.SuggestionBean suggestions = weather.getHeWeather5().get(0).getSuggestion();
         if (suggestions!=null){
+            suggestionView.setVisibility(View.VISIBLE);
             suggestionView.setSuggestiont(suggestions);
+        }else{
+            suggestionView.setVisibility(View.GONE);
         }
     }
 
@@ -143,7 +162,10 @@ public class MainActivity extends AppCompatActivity {
     private void showDayForecast(Weather weather) {
         List<Weather.HeWeather5Bean.DailyForecastBean> dailyForecast = weather.getHeWeather5().get(0).getDaily_forecast();
         if (dailyForecast!=null){
+            dfView.setVisibility(View.VISIBLE);
             dfView.setDailyForecast(dailyForecast);
+        }else{
+            dfView.setVisibility(View.GONE);
         }
     }
 
@@ -151,7 +173,10 @@ public class MainActivity extends AppCompatActivity {
     private void showHourForecast(Weather weather) {
         List<Weather.HeWeather5Bean.HourlyForecastBean> hourlyForecast = weather.getHeWeather5().get(0).getHourly_forecast();
         if (hourlyForecast != null) {
+            hfView.setVisibility(View.VISIBLE);
             hfView.setHourlyForecast(hourlyForecast);
+        }else{
+            hfView.setVisibility(View.GONE);
         }
 
     }

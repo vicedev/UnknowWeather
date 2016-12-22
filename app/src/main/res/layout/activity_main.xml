@@ -54,6 +54,15 @@
                         android:background="@null"
                         android:src="@mipmap/ic_launcher" />
                 </LinearLayout>
+                <com.vice.unknowweather.custom.NowView
+                    android:background="@drawable/hour_forecast_bg"
+                    android:layout_margin="10dp"
+                    android:padding="10dp"
+                    android:id="@+id/now_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </com.vice.unknowweather.custom.NowView>
 
                 <com.vice.unknowweather.custom.HourForecastView
                     android:layout_margin="10dp"
