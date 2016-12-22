@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
     //开始定位
     private void startLocate() {
+        tvCity.setText("定位中。。。");
         App.mLocationClient.registerLocationListener(myListener);    //注册监听函数
         App.mLocationClient.start();
     }
