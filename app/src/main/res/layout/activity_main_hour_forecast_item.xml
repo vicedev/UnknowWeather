@@ -8,17 +8,20 @@
         android:id="@+id/tv_date"
         android:layout_weight="1"
         android:layout_width="0dp"
+        android:gravity="center"
         android:layout_height="wrap_content" />
     <TextView
         android:textColor="@android:color/white"
         android:id="@+id/tv_cond"
         android:layout_weight="1"
         android:layout_width="0dp"
+        android:gravity="center"
         android:layout_height="wrap_content" />
     <TextView
         android:textColor="@android:color/white"
         android:id="@+id/tv_tmp"
         android:layout_weight="1"
         android:layout_width="0dp"
+        android:gravity="center"
         android:layout_height="wrap_content" />
 </LinearLayout>

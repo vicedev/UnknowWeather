@@ -21,6 +21,7 @@ import com.vice.unknowweather.bean.City;
 import com.vice.unknowweather.bean.Weather;
 import com.vice.unknowweather.custom.DayForecastView;
 import com.vice.unknowweather.custom.HourForecastView;
+import com.vice.unknowweather.custom.SuggestionView;
 import com.vice.unknowweather.global.Constants;
 import com.vice.unknowweather.model.CityWeatherModel;
 import com.vice.unknowweather.model.WeatherModel;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton ibCityManage;
     private HourForecastView hfView;//显示每小时的天气
     private DayForecastView dfView;//显示后面几天的天气
+    private SuggestionView suggestionView;//显示生活建议
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         refreshLayout = (MaterialRefreshLayout) findViewById(R.id.refresh);
         hfView = (HourForecastView) findViewById(R.id.hf_view);
         dfView= (DayForecastView) findViewById(R.id.df_view);
+        suggestionView = (SuggestionView) findViewById(R.id.suggestion_view);
 
         ibCityManage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +128,15 @@ public class MainActivity extends AppCompatActivity {
     private void showWeather(Weather weather) {
         showHourForecast(weather);
         showDayForecast(weather);
+        showSuggestion(weather);
+    }
+
+    //显示生活简易
+    private void showSuggestion(Weather weather) {
+        Weather.HeWeather5Bean.SuggestionBean suggestions = weather.getHeWeather5().get(0).getSuggestion();
+        if (suggestions!=null){
+            suggestionView.setSuggestiont(suggestions);
+        }
     }
 
     //显示后几天的天气
