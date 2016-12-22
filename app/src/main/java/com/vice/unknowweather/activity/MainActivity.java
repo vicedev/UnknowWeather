@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,11 +19,15 @@ import com.vice.unknowweather.App;
 import com.vice.unknowweather.R;
 import com.vice.unknowweather.bean.City;
 import com.vice.unknowweather.bean.Weather;
+import com.vice.unknowweather.custom.DayForecastView;
+import com.vice.unknowweather.custom.HourForecastView;
 import com.vice.unknowweather.global.Constants;
 import com.vice.unknowweather.model.CityWeatherModel;
 import com.vice.unknowweather.model.WeatherModel;
 import com.vice.unknowweather.utils.SPUtils;
 import com.vice.unknowweather.utils.ToastUtils;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "vvvLocation";
@@ -30,21 +35,22 @@ public class MainActivity extends AppCompatActivity {
 
     public BDLocationListener myListener = new MyLocationListener();
     private TextView tvCity;
-    private TextView tvWeather;
     private MaterialRefreshLayout refreshLayout;
     private ImageButton ibSettings;
     private ImageButton ibCityManage;
+    private HourForecastView hfView;//显示每小时的天气
+    private DayForecastView dfView;//显示后面几天的天气
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tvCity = (TextView) findViewById(R.id.tv_city);
-        tvWeather = (TextView) findViewById(R.id.tv_weather);
         ibSettings = (ImageButton) findViewById(R.id.ib_settings);
         ibCityManage = (ImageButton) findViewById(R.id.ib_city_manage);
         refreshLayout = (MaterialRefreshLayout) findViewById(R.id.refresh);
-
+        hfView = (HourForecastView) findViewById(R.id.hf_view);
+        dfView= (DayForecastView) findViewById(R.id.df_view);
 
         ibCityManage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         ibSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,SettingsActivity.class);
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
             }
         });
@@ -92,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         City city = CityWeatherModel.getInstance().queryCityWeather(cityName);
         if (city != null) {
             if (!TextUtils.isEmpty(city.getWeather())) {
-                tvWeather.setText(city.getWeather());
+                showWeather(new Gson().fromJson(city.getWeather(), Weather.class));
             }
         }
         //再从网络获取数据显示
@@ -102,8 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 //天气存入数据库
                 CityWeatherModel.getInstance().insertCityWeather(cityName, weather);
                 //显示天气
-                tvWeather.setText(new Gson().toJson(weather));
-
+                showWeather(weather);
                 //结束刷新状态
                 refreshLayout.finishRefreshing();
             }
@@ -115,6 +120,28 @@ public class MainActivity extends AppCompatActivity {
                 refreshLayout.finishRefreshing();
             }
         });
+    }
+
+    private void showWeather(Weather weather) {
+        showHourForecast(weather);
+        showDayForecast(weather);
+    }
+
+    //显示后几天的天气
+    private void showDayForecast(Weather weather) {
+        List<Weather.HeWeather5Bean.DailyForecastBean> dailyForecast = weather.getHeWeather5().get(0).getDaily_forecast();
+        if (dailyForecast!=null){
+            dfView.setDailyForecast(dailyForecast);
+        }
+    }
+
+    //显示每小时的天气
+    private void showHourForecast(Weather weather) {
+        List<Weather.HeWeather5Bean.HourlyForecastBean> hourlyForecast = weather.getHeWeather5().get(0).getHourly_forecast();
+        if (hourlyForecast != null) {
+            hfView.setHourlyForecast(hourlyForecast);
+        }
+
     }
 
 

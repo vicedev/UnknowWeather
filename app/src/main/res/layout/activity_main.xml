@@ -54,11 +54,20 @@
                         android:src="@mipmap/ic_launcher" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_weather"
+                <com.vice.unknowweather.custom.HourForecastView
+                    android:background="@drawable/hour_forecast_bg"
+                    android:id="@+id/hf_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp" />
+                    android:layout_height="wrap_content">
+
+                </com.vice.unknowweather.custom.HourForecastView>
+                <com.vice.unknowweather.custom.DayForecastView
+                    android:background="@drawable/hour_forecast_bg"
+                    android:id="@+id/df_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </com.vice.unknowweather.custom.DayForecastView>
             </LinearLayout>
         </ScrollView>
 

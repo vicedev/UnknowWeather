@@ -41,6 +41,7 @@ public class DBHelper {
         City city = new City();
         city.setCityName(cityName);
         city.setWeather(weather);
+        city.save();
         return city.isSaved();
     }
 
@@ -53,6 +54,10 @@ public class DBHelper {
             }
         }
         return null;
+    }
+    public List<City> retrieveAllCityWeather(){
+        List<City> cityList = DataSupport.findAll(City.class);
+        return cityList;
     }
 
     //删

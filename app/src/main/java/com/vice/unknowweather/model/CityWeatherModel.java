@@ -61,8 +61,13 @@ public class CityWeatherModel {
         return DBHelper.getInstance().deleteCityWeather(cityName);
     }
 
-    public synchronized City queryCityWeather(String cityName){
+    public  City queryCityWeather(String cityName){
         City city = DBHelper.getInstance().retrieveCityWeather(cityName);
         return city;
+    }
+
+    public List<City> querrAllCityWeathers(){
+        List<City> cityList = DBHelper.getInstance().retrieveAllCityWeather();
+        return cityList;
     }
 }
