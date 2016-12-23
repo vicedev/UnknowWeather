@@ -66,6 +66,15 @@ public class CityWeatherModel {
         return city;
     }
 
+    public  boolean hasCityWeather(String cityName){
+        City city = DBHelper.getInstance().retrieveCityWeather(cityName);
+        if (city!=null){
+         return true;
+        }else{
+            return false;
+        }
+    }
+
     public List<City> querrAllCityWeathers(){
         List<City> cityList = DBHelper.getInstance().retrieveAllCityWeather();
         return cityList;
