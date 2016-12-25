@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -13,10 +14,8 @@ import com.vice.unknowweather.adapter.RVCityAdapter;
 import com.vice.unknowweather.bean.City;
 import com.vice.unknowweather.global.Constants;
 import com.vice.unknowweather.model.CityWeatherModel;
-import com.vice.unknowweather.utils.ToastUtils;
 
 import java.util.List;
-import java.util.Random;
 
 public class CityManageActivity extends AppCompatActivity {
 
@@ -50,10 +49,9 @@ public class CityManageActivity extends AppCompatActivity {
         ibAddCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String citys[]={"杭州","上海","北京","深圳","成都","广州"};
-                City city=new City();
-                city.setCityName(citys[new Random().nextInt(6)]);
-                adapter.addCity(city);
+                Intent intent = new Intent(CityManageActivity.this, CityPickActivity.class);
+                startActivityForResult(intent, Constants.REQUEST_CITY);
+
             }
         });
 
@@ -65,21 +63,36 @@ public class CityManageActivity extends AppCompatActivity {
     private void initData() {
         cityList = cityWeatherModel.querrAllCityWeathers();
 
-        adapter=new RVCityAdapter(cityList, new onRVCityAdapterItemClickListener() {
+        adapter = new RVCityAdapter(cityList, new onRVCityAdapterItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Intent intent=new Intent();
-                intent.putExtra(Constants.CITY_NAME,cityList.get(position).getCityName());
-                setResult(RESULT_OK,intent);
+                Intent intent = new Intent();
+                intent.putExtra(Constants.CITY_NAME, cityList.get(position).getCityName());
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });
-        GridLayoutManager manager=new GridLayoutManager(this,2);
+        GridLayoutManager manager = new GridLayoutManager(this, 2);
         rvCity.setLayoutManager(manager);
         rvCity.setAdapter(adapter);
     }
 
-    public interface  onRVCityAdapterItemClickListener{
+    public interface onRVCityAdapterItemClickListener {
         void onItemClick(int position);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==Constants.REQUEST_CITY&&resultCode==RESULT_OK){
+            String cityName=data.getStringExtra(Constants.CITY_NAME);
+            if (!TextUtils.isEmpty(cityName)){
+                City city = new City();
+                city.setCityName(cityName);
+                adapter.addCity(city);
+                rvCity.scrollToPosition(cityList.size()-1);
+            }
+        }
     }
 }

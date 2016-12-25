@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.vice.unknowweather.activity.CityPickActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorAccent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/ib_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@null"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="添加城市"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:background="@null"
+            android:src="@mipmap/ic_launcher" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatAutoCompleteTextView
+        android:id="@+id/auto_complete_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:completionThreshold="1"
+        android:hint="请输入城市名称"
+        android:layout_margin="20dp"
+        android:padding="5dp"
+        android:textColorHint="@android:color/white"
+        android:textColor="@android:color/white"
+        android:background="@drawable/hour_forecast_bg"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp">
+        <TextView
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="当前位置： " />
+        <TextView
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:id="@+id/tv_locate_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="    " />
+        <TextView
+            android:textSize="18sp"
+            android:id="@+id/tv_relocate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="（点击重新定位）"/>
+    </LinearLayout>
+    <TextView
+        android:textColor="@android:color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="热门城市"
+        android:layout_marginLeft="20dp" />
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_hot_cities"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+</LinearLayout>

@@ -46,7 +46,9 @@
             android:value="eGXyuMhKaBBQxYvFc5NTiSRWZp9VrCep" />
         //key:开发者申请的Key
         <activity android:name=".activity.CityManageActivity" />
-        <activity android:name=".activity.SettingsActivity"></activity>
+        <activity android:name=".activity.SettingsActivity" />
+        <activity android:name=".activity.CityPickActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
     </application>
 
 </manifest>

@@ -110,6 +110,7 @@ public class RVCityAdapter extends RecyclerView.Adapter<RVCityAdapter.MyViewHold
     private void showDialog(boolean show, final int position) {
         if (show) {
             dialog = new AlertDialog.Builder(mContext)
+                    .setTitle("删除城市")
                     .setMessage("确定要删除吗？")
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override

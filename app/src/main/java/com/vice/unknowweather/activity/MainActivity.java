@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "vvvLocation";
 
 
-    public BDLocationListener myListener = new MyLocationListener();
+    private  BDLocationListener myListener = new MyLocationListener();
     private TextView tvCity;
     private MaterialRefreshLayout refreshLayout;
     private ImageButton ibSettings;
@@ -118,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
                 //结束刷新状态
                 refreshLayout.finishRefreshing();
             }
-
             @Override
             public void onFailure() {
                 ToastUtils.showShort("获取天气信息失败");
@@ -244,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        stopLocate();
         WeatherModel.getInstance().cancelAllRequest();
     }
 }
