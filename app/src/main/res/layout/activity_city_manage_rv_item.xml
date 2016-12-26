@@ -27,8 +27,9 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentRight="true"
+                android:background="@null"
                 android:layout_alignParentTop="true"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/delete"/>
         </RelativeLayout>
 
     </LinearLayout>

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/bg"
     tools:context="com.vice.unknowweather.activity.CityManageActivity">
 
     <LinearLayout
@@ -13,17 +14,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorAccent"
+            android:background="@android:color/transparent"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/ib_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:background="@null"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@mipmap/back" />
 
             <TextView
                 android:layout_width="0dp"
@@ -36,11 +37,11 @@
 
             <ImageButton
                 android:id="@+id/ib_add_city"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
                 android:background="@null"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@mipmap/add" />
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView

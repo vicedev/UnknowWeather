@@ -9,17 +9,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorAccent"
+        android:background="@android:color/transparent"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/ib_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:background="@null"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/back" />
 
         <TextView
             android:layout_width="0dp"
@@ -32,8 +32,8 @@
 
         <ImageButton
             android:visibility="invisible"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
             android:layout_marginRight="10dp"
             android:background="@null"
             android:src="@mipmap/ic_launcher" />
@@ -41,6 +41,9 @@
     </LinearLayout>
 
     <android.support.v7.widget.AppCompatAutoCompleteTextView
+        android:maxLines="1"
+        android:drawableLeft="@mipmap/search"
+        android:drawablePadding="5dp"
         android:id="@+id/auto_complete_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,6 +61,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="20dp">
         <TextView
+            android:drawablePadding="5dp"
+            android:drawableLeft="@mipmap/locate"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:layout_width="wrap_content"
