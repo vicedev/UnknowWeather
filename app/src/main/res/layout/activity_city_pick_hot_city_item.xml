@@ -10,5 +10,5 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textColor="@android:color/white"
-        android:background="@drawable/hour_forecast_bg"/>
+        android:background="@drawable/default_view_bg"/>
 </FrameLayout>

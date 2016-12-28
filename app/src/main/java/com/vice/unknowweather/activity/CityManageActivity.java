@@ -17,7 +17,7 @@ import com.vice.unknowweather.model.CityWeatherModel;
 
 import java.util.List;
 
-public class CityManageActivity extends AppCompatActivity {
+public class CityManageActivity extends BaseActivity {
 
     private RecyclerView rvCity;
     private CityWeatherModel cityWeatherModel;

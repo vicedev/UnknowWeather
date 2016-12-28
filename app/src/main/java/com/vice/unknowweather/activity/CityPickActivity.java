@@ -20,7 +20,7 @@ import com.vice.unknowweather.adapter.CityPickHotCityAdapter;
 import com.vice.unknowweather.global.Constants;
 import com.vice.unknowweather.utils.ToastUtils;
 
-public class CityPickActivity extends AppCompatActivity {
+public class CityPickActivity extends BaseActivity {
 
     private BDLocationListener myListener = new MyLocationListener();
     private AutoCompleteTextView autoCompleteTv;

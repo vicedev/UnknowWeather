@@ -68,54 +68,64 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
+            <TextView
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="背景"
+                android:textSize="18sp"/>
+            <TextView
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                <RelativeLayout
                     android:layout_weight="1"
-                    android:padding="10dp"
-                    android:text="自动换背景"
-                    android:textSize="18sp" />
-
-                <com.suke.widget.SwitchButton
-                    android:id="@+id/sb_everyday_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+                    <RadioGroup
+                        android:id="@+id/rg_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <RadioButton
+                            android:id="@+id/rb_auto_change"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:text="自动换背景"/>
+                        <RadioButton
+                            android:id="@+id/rb_photo"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:text="从相册选择"/>
+                        <RadioButton
+                            android:id="@+id/rb_pure_color"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:text="自定义颜色"/>
+                    </RadioGroup>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp">
+                    <ImageView
+                        android:id="@+id/iv_current_bg"
+                        android:layout_centerInParent="true"
+                        android:layout_width="100dp"
+                        android:layout_height="150dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/bg"/>
+                </RelativeLayout>
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="150dp"
-                    android:src="@mipmap/bg"/>
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="150dp"
-                    android:src="@mipmap/bg"/>
-            </LinearLayout>
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                    <RadioButton
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="自动换背景"/>
-                    <RadioButton
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="从相册选择"/>
-            </RadioGroup>
         </LinearLayout>
 
     </ScrollView>

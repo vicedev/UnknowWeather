@@ -10,6 +10,17 @@ public class Constants {
     public static final String HEWEATHER_KEY="3c2fc0e29f6d4caa8b0ad774758a0829";
     public static final String BAIDU_KEY="eGXyuMhKaBBQxYvFc5NTiSRWZp9VrCep";
     public static final String BASE_URL="https://free-api.heweather.com/v5/weather";
+    public static final String AUTO_CHANGE_PIC_URL="http://guolin.tech/api/bing_pic";
+
+
+    public static final String CONFIG="config";
+    public static final String FIRST_START="first_start";
+    public static final String CURRENT_CITY="current_city";
+    public static final String CURRENT_BG_WAY="current_bg_way";
+    public static final String BG_AUTO_CHANGE="bg_auto_change";
+    public static final String BG_PHOTO="bg_photo";
+    public static final String BG_PURE_COLOR="bg_pure_color";
+    public static final String OPEN_NOTIFICATION_WEATHER="open_notification_weather";
 
     public static final int REQUEST_CITY = 6;
     public static final String CITY_NAME = "city_name";

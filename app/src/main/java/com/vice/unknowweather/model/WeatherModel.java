@@ -1,5 +1,6 @@
 package com.vice.unknowweather.model;
 
+import android.app.Activity;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -36,9 +37,9 @@ public class WeatherModel {
         return model;
     }
 
-    public void getWeather(String cityName, final WeatherCallBack callBack) {
+    public void getWeather(Object tag,String cityName, final WeatherCallBack callBack) {
         OkGo.get(Constants.BASE_URL + "?city=" + cityName + "&key=" + Constants.HEWEATHER_KEY)
-                .tag(Constants.BASE_URL)
+                .tag(tag)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String json, Call call, Response response) {
@@ -81,6 +82,9 @@ public class WeatherModel {
     //取消所有请求
     public void cancelAllRequest(){
         OkGo.getInstance().cancelAll();
+    }
+    public void cancelByTag(Object tag){
+        OkGo.getInstance().cancelTag(tag);
     }
 
     public interface WeatherCallBack {

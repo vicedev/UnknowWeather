@@ -1,17 +1,19 @@
 package com.vice.unknowweather.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
+import com.bumptech.glide.Glide;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.google.gson.Gson;
@@ -24,18 +26,21 @@ import com.vice.unknowweather.custom.HourForecastView;
 import com.vice.unknowweather.custom.NowView;
 import com.vice.unknowweather.custom.SuggestionView;
 import com.vice.unknowweather.global.Constants;
+import com.vice.unknowweather.model.BgModel;
 import com.vice.unknowweather.model.CityWeatherModel;
 import com.vice.unknowweather.model.WeatherModel;
+import com.vice.unknowweather.service.NotificationWeatherService;
 import com.vice.unknowweather.utils.SPUtils;
 import com.vice.unknowweather.utils.ToastUtils;
 
+import java.io.File;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private static final String TAG = "vvvLocation";
 
 
-    private  BDLocationListener myListener = new MyLocationListener();
+    private BDLocationListener myListener = new MyLocationListener();
     private TextView tvCity;
     private MaterialRefreshLayout refreshLayout;
     private ImageButton ibSettings;
@@ -44,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private DayForecastView dfView;//显示后面几天的天气
     private SuggestionView suggestionView;//显示生活建议
     private NowView nowView;//显示当前天气
+    private ImageView ivBg;//显示背景
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +60,10 @@ public class MainActivity extends AppCompatActivity {
         ibCityManage = (ImageButton) findViewById(R.id.ib_city_manage);
         refreshLayout = (MaterialRefreshLayout) findViewById(R.id.refresh);
         hfView = (HourForecastView) findViewById(R.id.hf_view);
-        dfView= (DayForecastView) findViewById(R.id.df_view);
+        dfView = (DayForecastView) findViewById(R.id.df_view);
         suggestionView = (SuggestionView) findViewById(R.id.suggestion_view);
-        nowView= (NowView) findViewById(R.id.now_view);
+        nowView = (NowView) findViewById(R.id.now_view);
+        ivBg = (ImageView) findViewById(R.id.iv_bg);
 
         ibCityManage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         refreshLayout.setSunStyle(true);
-//        refresh.setIsOverLay(true);
+        refreshLayout.setIsOverLay(true);
         refreshLayout = (MaterialRefreshLayout) findViewById(R.id.refresh);
         refreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
             @Override
@@ -84,6 +91,61 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         refreshLayout.autoRefresh();
+
+        //是否下每日一图
+        String currentBgWay = SPUtils.getCurrentBgWay();
+        if (currentBgWay.equals(Constants.BG_AUTO_CHANGE)) {
+            BgModel.getInstance().loadAutoChangeBg(MainActivity.this, new BgModel.AutoChangeBgCallBack() {
+                @Override
+                public void onSuccess(String url) {
+                    BgModel.getInstance().setAutoChangeBgToSP(url);
+                    Glide.with(MainActivity.this).load(url).error(R.mipmap.bg).into(ivBg);
+                }
+
+                @Override
+                public void onFailure() {
+
+                }
+            });
+        }
+
+        //是否开启通知栏天气
+        boolean open=SPUtils.getOpenNotificationWeather();
+        if (open){
+            Intent intent=new Intent(MainActivity.this, NotificationWeatherService.class);
+            startService(intent);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        setBackGround();
+
+    }
+
+    private void setBackGround() {
+        String currentBgWay = SPUtils.getCurrentBgWay();
+        switch (currentBgWay) {
+            case Constants.BG_AUTO_CHANGE:
+                String bg = SPUtils.getAutoChangeBg();
+                Glide.with(MainActivity.this).load(bg).error(R.mipmap.bg).into(ivBg);
+                break;
+
+            case Constants.BG_PHOTO:
+                String path = getFilesDir() + File.separator + "bg";
+                Glide.with(MainActivity.this).load(path).error(R.mipmap.bg).into(ivBg);
+
+                break;
+
+            case Constants.BG_PURE_COLOR:
+                int color = SPUtils.getCustomColorBg();
+                ColorDrawable colorDrawable=new ColorDrawable(color);
+                ivBg.setImageDrawable(colorDrawable);
+
+                break;
+        }
     }
 
     private void refresh() {
@@ -108,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         //再从网络获取数据显示
-        WeatherModel.getInstance().getWeather(cityName, new WeatherModel.WeatherCallBack() {
+        WeatherModel.getInstance().getWeather(this, cityName, new WeatherModel.WeatherCallBack() {
             @Override
             public void onSuccess(Weather weather) {
                 //天气存入数据库
@@ -118,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
                 //结束刷新状态
                 refreshLayout.finishRefreshing();
             }
+
             @Override
             public void onFailure() {
                 ToastUtils.showShort("获取天气信息失败");
@@ -138,10 +201,10 @@ public class MainActivity extends AppCompatActivity {
     private void showNow(Weather weather) {
         Weather.HeWeather5Bean.NowBean now = weather.getHeWeather5().get(0).getNow();
         String loc = weather.getHeWeather5().get(0).getBasic().getUpdate().getLoc();
-        if (now!=null){
+        if (now != null) {
             nowView.setVisibility(View.VISIBLE);
-            nowView.setNow(now,loc);
-        }else{
+            nowView.setNow(now, loc);
+        } else {
             nowView.setVisibility(View.GONE);
         }
     }
@@ -149,10 +212,10 @@ public class MainActivity extends AppCompatActivity {
     //显示生活建议
     private void showSuggestion(Weather weather) {
         Weather.HeWeather5Bean.SuggestionBean suggestions = weather.getHeWeather5().get(0).getSuggestion();
-        if (suggestions!=null){
+        if (suggestions != null) {
             suggestionView.setVisibility(View.VISIBLE);
             suggestionView.setSuggestiont(suggestions);
-        }else{
+        } else {
             suggestionView.setVisibility(View.GONE);
         }
     }
@@ -160,10 +223,10 @@ public class MainActivity extends AppCompatActivity {
     //显示后几天的天气
     private void showDayForecast(Weather weather) {
         List<Weather.HeWeather5Bean.DailyForecastBean> dailyForecast = weather.getHeWeather5().get(0).getDaily_forecast();
-        if (dailyForecast!=null){
+        if (dailyForecast != null) {
             dfView.setVisibility(View.VISIBLE);
             dfView.setDailyForecast(dailyForecast);
-        }else{
+        } else {
             dfView.setVisibility(View.GONE);
         }
     }
@@ -174,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
         if (hourlyForecast != null) {
             hfView.setVisibility(View.VISIBLE);
             hfView.setHourlyForecast(hourlyForecast);
-        }else{
+        } else {
             hfView.setVisibility(View.GONE);
         }
 
@@ -244,6 +307,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         stopLocate();
-        WeatherModel.getInstance().cancelAllRequest();
+        WeatherModel.getInstance().cancelByTag(this);
     }
 }

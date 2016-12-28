@@ -3,8 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/bg"
     tools:context=".activity.MainActivity">
+    <ImageView
+        android:id="@+id/iv_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
 
     <com.cjj.MaterialRefreshLayout
         android:id="@+id/refresh"
@@ -57,7 +61,7 @@
                 </LinearLayout>
                 <com.vice.unknowweather.custom.NowView
                     android:visibility="gone"
-                    android:background="@drawable/hour_forecast_bg"
+                    android:background="@drawable/main_weather_bg"
                     android:layout_margin="10dp"
                     android:padding="10dp"
                     android:id="@+id/now_view"
@@ -70,7 +74,7 @@
                     android:visibility="gone"
                     android:layout_margin="10dp"
                     android:padding="10dp"
-                    android:background="@drawable/hour_forecast_bg"
+                    android:background="@drawable/main_weather_bg"
                     android:id="@+id/hf_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -80,7 +84,7 @@
                     android:visibility="gone"
                     android:layout_margin="10dp"
                     android:padding="10dp"
-                    android:background="@drawable/hour_forecast_bg"
+                    android:background="@drawable/main_weather_bg"
                     android:id="@+id/df_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -91,7 +95,7 @@
                     android:visibility="gone"
                     android:layout_margin="10dp"
                     android:padding="10dp"
-                    android:background="@drawable/hour_forecast_bg"
+                    android:background="@drawable/main_weather_bg"
                     android:id="@+id/suggestion_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
