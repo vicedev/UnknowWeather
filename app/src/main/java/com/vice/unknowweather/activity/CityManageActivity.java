@@ -61,20 +61,26 @@ public class CityManageActivity extends BaseActivity {
 
 
     private void initData() {
-        cityList = cityWeatherModel.querrAllCityWeathers();
-
-        adapter = new RVCityAdapter(cityList, new onRVCityAdapterItemClickListener() {
+        new Thread(new Runnable() {
             @Override
-            public void onItemClick(int position) {
-                Intent intent = new Intent();
-                intent.putExtra(Constants.CITY_NAME, cityList.get(position).getCityName());
-                setResult(RESULT_OK, intent);
-                finish();
+            public void run() {
+                cityList = cityWeatherModel.querrAllCityWeathers();
+
+                adapter = new RVCityAdapter(cityList, new onRVCityAdapterItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+                        Intent intent = new Intent();
+                        intent.putExtra(Constants.CITY_NAME, cityList.get(position).getCityName());
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+                });
+                GridLayoutManager manager = new GridLayoutManager(CityManageActivity.this, 2);
+                rvCity.setLayoutManager(manager);
+                rvCity.setAdapter(adapter);
             }
-        });
-        GridLayoutManager manager = new GridLayoutManager(this, 2);
-        rvCity.setLayoutManager(manager);
-        rvCity.setAdapter(adapter);
+        }).start();
+
     }
 
     public interface onRVCityAdapterItemClickListener {

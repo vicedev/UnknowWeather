@@ -51,7 +51,7 @@ public class SuggestionView extends LinearLayout {
         TextView tvName = new TextView(getContext());
         tvName.setText("生活建议");
         tvName.setTextColor(Color.WHITE);
-        tvName.setTextSize(DisplayUtils.sp2px(getContext(), 6.0f));
+        tvName.setTextSize(18);
         addView(tvName);
 
         Weather.HeWeather5Bean.SuggestionBean.AirBean air = suggestions.getAir();

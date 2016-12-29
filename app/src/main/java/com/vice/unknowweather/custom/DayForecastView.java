@@ -38,7 +38,7 @@ public class DayForecastView extends LinearLayout {
         TextView tvName = new TextView(getContext());
         tvName.setText("日期预报");
         tvName.setTextColor(Color.WHITE);
-        tvName.setTextSize(DisplayUtils.sp2px(getContext(), 6.0f));
+        tvName.setTextSize(18);
         addView(tvName);
 
         for (int i = 0; i < dailyForecast.size(); i++) {

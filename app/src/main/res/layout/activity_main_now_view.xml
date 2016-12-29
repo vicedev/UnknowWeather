@@ -45,6 +45,14 @@
             android:orientation="vertical"
             android:gravity="right|bottom">
             <TextView
+                android:id="@+id/tv_aqi"
+                android:textColor="@android:color/white"
+                android:gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="5dp"
+                android:drawableLeft="@mipmap/aqi"/>
+            <TextView
                 android:id="@+id/tv_hum"
                 android:textColor="@android:color/white"
                 android:gravity="right"

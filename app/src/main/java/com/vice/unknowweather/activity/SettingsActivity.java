@@ -78,6 +78,7 @@ public class SettingsActivity extends AppCompatActivity {
                 }else{
                     stopService(intent);
                 }
+                SPUtils.setOpenNotificationWeather(isChecked);
             }
         });
 

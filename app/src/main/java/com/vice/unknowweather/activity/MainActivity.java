@@ -109,12 +109,6 @@ public class MainActivity extends BaseActivity {
             });
         }
 
-        //是否开启通知栏天气
-        boolean open=SPUtils.getOpenNotificationWeather();
-        if (open){
-            Intent intent=new Intent(MainActivity.this, NotificationWeatherService.class);
-            startService(intent);
-        }
     }
 
     @Override
@@ -162,11 +156,20 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getAndshowWeather(final String cityName) {
+        //是否开启通知栏天气
+        boolean open=SPUtils.getOpenNotificationWeather();
+        if (open){
+            Intent intent=new Intent(MainActivity.this, NotificationWeatherService.class);
+            startService(intent);
+        }
+
         //先从本地获取数据显示
         City city = CityWeatherModel.getInstance().queryCityWeather(cityName);
         if (city != null) {
             if (!TextUtils.isEmpty(city.getWeather())) {
                 showWeather(new Gson().fromJson(city.getWeather(), Weather.class));
+            }else{
+                hideWeatherView();
             }
         }
         //再从网络获取数据显示
@@ -190,6 +193,14 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    //没有天气信息的时候隐藏显示天气的控件
+    private void hideWeatherView() {
+        dfView.setVisibility(View.GONE);
+        hfView.setVisibility(View.GONE);
+        nowView.setVisibility(View.GONE);
+        suggestionView.setVisibility(View.GONE);
+    }
+
     private void showWeather(Weather weather) {
         showNow(weather);
         showHourForecast(weather);
@@ -201,9 +212,10 @@ public class MainActivity extends BaseActivity {
     private void showNow(Weather weather) {
         Weather.HeWeather5Bean.NowBean now = weather.getHeWeather5().get(0).getNow();
         String loc = weather.getHeWeather5().get(0).getBasic().getUpdate().getLoc();
-        if (now != null) {
+        Weather.HeWeather5Bean.AqiBean.CityBean cityAqi = weather.getHeWeather5().get(0).getAqi().getCity();
+        if (now != null&&!TextUtils.isEmpty(loc)&&cityAqi!=null) {
             nowView.setVisibility(View.VISIBLE);
-            nowView.setNow(now, loc);
+            nowView.setNow(now, loc,cityAqi);
         } else {
             nowView.setVisibility(View.GONE);
         }

@@ -4,5 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="weather_bg">#6633b5e5</color>
+    <color name="weather_bg">#7733b5e5</color>
+    <color name="remoteviews_text_color">#555555</color>
+
 </resources>

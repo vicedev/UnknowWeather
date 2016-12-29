@@ -22,6 +22,7 @@ public class NowView extends FrameLayout {
     private TextView tvVis;
     private TextView tvWind;
     private TextView tvTime;
+    private TextView tvAqi;
 
     public NowView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -36,6 +37,7 @@ public class NowView extends FrameLayout {
         tvVis = (TextView) findViewById(R.id.tv_vis);
         tvWind = (TextView) findViewById(R.id.tv_wind);
         tvTime = (TextView) findViewById(R.id.tv_time);
+        tvAqi = (TextView) findViewById(R.id.tv_aqi);
     }
 
     public NowView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -47,7 +49,7 @@ public class NowView extends FrameLayout {
         super(context);
     }
 
-    public void setNow( Weather.HeWeather5Bean.NowBean now,String updateTime){
+    public void setNow(Weather.HeWeather5Bean.NowBean now, String updateTime,Weather.HeWeather5Bean.AqiBean.CityBean cityAqi){
         String tmp = now.getTmp()+"℃";//温度
         String condTxt = now.getCond().getTxt();//天气
         String hum = "相对湿度："+now.getHum()+"%";//相对湿度
@@ -56,6 +58,8 @@ public class NowView extends FrameLayout {
         String sc = now.getWind().getSc()+"级";//风力
         String wind=dir+"  "+sc;
         String time="发布时间："+updateTime.split(" ")[1];
+        String aqiTxt=cityAqi.getQlty()+" "+cityAqi.getAqi();
+
 
 
         tvTmp.setText(tmp);
@@ -64,5 +68,6 @@ public class NowView extends FrameLayout {
         tvVis.setText(vis);
         tvWind.setText(wind);
         tvTime.setText(time);
+        tvAqi.setText(aqiTxt);
     }
 }
