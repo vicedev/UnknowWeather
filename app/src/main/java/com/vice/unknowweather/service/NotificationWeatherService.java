@@ -5,7 +5,6 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
@@ -14,7 +13,6 @@ import android.widget.RemoteViews;
 import com.google.gson.Gson;
 import com.vice.unknowweather.R;
 import com.vice.unknowweather.activity.MainActivity;
-import com.vice.unknowweather.bean.City;
 import com.vice.unknowweather.bean.Weather;
 import com.vice.unknowweather.model.CityWeatherModel;
 import com.vice.unknowweather.model.WeatherModel;
@@ -23,6 +21,8 @@ import com.vice.unknowweather.utils.SPUtils;
 public class NotificationWeatherService extends Service {
 
     private String currentCity;
+    private String aqiNum;
+    private String quality;
 
     public NotificationWeatherService() {
     }
@@ -43,13 +43,13 @@ public class NotificationWeatherService extends Service {
         currentCity = SPUtils.getCurrentCity();
         updateWeather();
 
-        AlarmManager manager= (AlarmManager) getSystemService(ALARM_SERVICE);
-        int deltTime =1*60*60*1000;
-        long nextRefreshTime=deltTime+ SystemClock.elapsedRealtime();
-        Intent i=new Intent(this,NotificationWeatherService.class);
-        PendingIntent pi=PendingIntent.getService(this,0,i,0);
+        AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        int deltTime = 1 * 60 * 60 * 1000;
+        long nextRefreshTime = deltTime + SystemClock.elapsedRealtime();
+        Intent i = new Intent(this, NotificationWeatherService.class);
+        PendingIntent pi = PendingIntent.getService(this, 0, i, 0);
         manager.cancel(pi);
-        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,nextRefreshTime,pi);
+        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, nextRefreshTime, pi);
 
         return super.onStartCommand(intent, flags, startId);
 
@@ -79,43 +79,53 @@ public class NotificationWeatherService extends Service {
         Weather.HeWeather5Bean.AqiBean aqi = heWeather5Bean.getAqi();
         String loc = heWeather5Bean.getBasic().getUpdate().getLoc();
 
+        try {
+            String tmp = now.getTmp() + "℃";//温度
+            String condTxt = now.getCond().getTxt();//天气
+            String maxTmp = today.getTmp().getMax();//最高温度
+            String minTmp = today.getTmp().getMin();//最低温度
+            //香港、澳门、台湾没有aqi，有毒
+            if (aqi!=null){
+                aqiNum = aqi.getCity().getAqi(); //aqi指数
+                quality = aqi.getCity().getQlty(); //空气质量
+            }
 
-        String tmp = now.getTmp()+"℃";//温度
-        String condTxt = now.getCond().getTxt();//天气
-        String maxTmp=today.getTmp().getMax();//最高温度
-        String minTmp=today.getTmp().getMin();//最低温度
-        String aqiNum=aqi.getCity().getAqi();//aqi指数
-        String quality=aqi.getCity().getQlty();//空气质量
-        String time="发布时间："+loc.split(" ")[1];//发布时间
-        String city = heWeather5Bean.getBasic().getCity();//当前城市
+            String time = "发布时间：" + loc.split(" ")[1];//发布时间
+            String city = heWeather5Bean.getBasic().getCity();//当前城市
 
-        RemoteViews remoteViews=new RemoteViews(this.getPackageName(),R.layout.notification_weather_layout);
-        remoteViews.setTextViewText(R.id.tv_tmp_now,tmp);
-        remoteViews.setTextViewText(R.id.tv_cond,condTxt);
-        remoteViews.setTextViewText(R.id.tv_aqi,quality+" "+aqiNum);
-        remoteViews.setTextViewText(R.id.tv_tmp,maxTmp+"/"+minTmp+"℃");
-        remoteViews.setTextViewText(R.id.tv_city,city);
-        remoteViews.setTextViewText(R.id.tv_publish_time,time);
+            RemoteViews remoteViews = new RemoteViews(this.getPackageName(), R.layout.notification_weather_layout);
+            remoteViews.setTextViewText(R.id.tv_tmp_now, tmp);
+            remoteViews.setTextViewText(R.id.tv_cond, condTxt);
+            if (aqi!=null){
+                remoteViews.setTextViewText(R.id.tv_aqi, quality + " " + aqiNum);
+            }
+            remoteViews.setTextViewText(R.id.tv_tmp, maxTmp + "/" + minTmp + "℃");
+            remoteViews.setTextViewText(R.id.tv_city, city);
+            remoteViews.setTextViewText(R.id.tv_publish_time, time);
 
 
-        sendNotification(remoteViews);
+            sendNotification(remoteViews);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void updateDBWeather(Weather weather) {
-        String weatherJson=new Gson().toJson(weather);
-        CityWeatherModel.getInstance().insertCityWeather(currentCity,weatherJson);
+        String weatherJson = new Gson().toJson(weather);
+        CityWeatherModel.getInstance().insertCityWeather(currentCity, weatherJson);
     }
 
     private void sendNotification(RemoteViews remoteViews) {
 
-        Intent i=new Intent(this, MainActivity.class);
-        PendingIntent pi=PendingIntent.getActivity(this,0,i,0);
+        Intent i = new Intent(this, MainActivity.class);
+        PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
 
-        Notification notification=new NotificationCompat.Builder(this)
+        Notification notification = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setCustomContentView(remoteViews)
                 .setContentIntent(pi)
                 .build();
-        startForeground(1,notification);
+        startForeground(1, notification);
     }
 }

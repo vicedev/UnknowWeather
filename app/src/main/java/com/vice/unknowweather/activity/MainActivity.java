@@ -3,7 +3,7 @@ package com.vice.unknowweather.activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.google.gson.Gson;
@@ -50,6 +51,8 @@ public class MainActivity extends BaseActivity {
     private SuggestionView suggestionView;//显示生活建议
     private NowView nowView;//显示当前天气
     private ImageView ivBg;//显示背景
+    private ImageView ivUnknow;
+    private long startTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,7 @@ public class MainActivity extends BaseActivity {
         suggestionView = (SuggestionView) findViewById(R.id.suggestion_view);
         nowView = (NowView) findViewById(R.id.now_view);
         ivBg = (ImageView) findViewById(R.id.iv_bg);
+        ivUnknow = (ImageView) findViewById(R.id.iv_unknow);
 
         ibCityManage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,13 +133,17 @@ public class MainActivity extends BaseActivity {
 
             case Constants.BG_PHOTO:
                 String path = getFilesDir() + File.separator + "bg";
-                Glide.with(MainActivity.this).load(path).error(R.mipmap.bg).into(ivBg);
+                Glide.with(MainActivity.this).load(path)
+                        .error(R.mipmap.bg)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .into(ivBg);
 
                 break;
 
             case Constants.BG_PURE_COLOR:
                 int color = SPUtils.getCustomColorBg();
-                ColorDrawable colorDrawable=new ColorDrawable(color);
+                ColorDrawable colorDrawable = new ColorDrawable(color);
                 ivBg.setImageDrawable(colorDrawable);
 
                 break;
@@ -143,6 +151,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void refresh() {
+//        startTime = SystemClock.elapsedRealtime();
+
         boolean isFirstStart = checkIsFirstStart();
         if (isFirstStart) {
             startLocate();
@@ -157,9 +167,9 @@ public class MainActivity extends BaseActivity {
 
     private void getAndshowWeather(final String cityName) {
         //是否开启通知栏天气
-        boolean open=SPUtils.getOpenNotificationWeather();
-        if (open){
-            Intent intent=new Intent(MainActivity.this, NotificationWeatherService.class);
+        boolean open = SPUtils.getOpenNotificationWeather();
+        if (open) {
+            Intent intent = new Intent(MainActivity.this, NotificationWeatherService.class);
             startService(intent);
         }
 
@@ -168,7 +178,7 @@ public class MainActivity extends BaseActivity {
         if (city != null) {
             if (!TextUtils.isEmpty(city.getWeather())) {
                 showWeather(new Gson().fromJson(city.getWeather(), Weather.class));
-            }else{
+            } else {
                 hideWeatherView();
             }
         }
@@ -178,10 +188,10 @@ public class MainActivity extends BaseActivity {
             public void onSuccess(Weather weather) {
                 //天气存入数据库
                 CityWeatherModel.getInstance().insertCityWeather(cityName, weather);
-                //显示天气
                 showWeather(weather);
                 //结束刷新状态
                 refreshLayout.finishRefreshing();
+
             }
 
             @Override
@@ -193,15 +203,41 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+//    private void finishRefreshing(final Weather weather) {
+//        long endTime = SystemClock.elapsedRealtime();
+//        long deltTime=endTime-startTime;
+//        long expectTime=1*1000;
+//        long delayTime=expectTime-deltTime;
+//        if ((deltTime)<expectTime){
+//            refreshLayout.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    refreshLayout.finishRefreshing();
+//                    //显示天气
+//                    if (weather!=null){
+//                        showWeather(weather);
+//                    }
+//                }
+//            }, delayTime );
+//        }else{
+//            refreshLayout.finishRefreshing();
+//        }
+//    }
+
     //没有天气信息的时候隐藏显示天气的控件
     private void hideWeatherView() {
+        ivUnknow.setVisibility(View.VISIBLE);
+
         dfView.setVisibility(View.GONE);
         hfView.setVisibility(View.GONE);
         nowView.setVisibility(View.GONE);
         suggestionView.setVisibility(View.GONE);
+
     }
 
     private void showWeather(Weather weather) {
+        ivUnknow.setVisibility(View.GONE);
+
         showNow(weather);
         showHourForecast(weather);
         showDayForecast(weather);
@@ -210,49 +246,65 @@ public class MainActivity extends BaseActivity {
 
     //显示当前天气
     private void showNow(Weather weather) {
-        Weather.HeWeather5Bean.NowBean now = weather.getHeWeather5().get(0).getNow();
-        String loc = weather.getHeWeather5().get(0).getBasic().getUpdate().getLoc();
-        Weather.HeWeather5Bean.AqiBean.CityBean cityAqi = weather.getHeWeather5().get(0).getAqi().getCity();
-        if (now != null&&!TextUtils.isEmpty(loc)&&cityAqi!=null) {
-            nowView.setVisibility(View.VISIBLE);
-            nowView.setNow(now, loc,cityAqi);
-        } else {
-            nowView.setVisibility(View.GONE);
+        try {
+            Weather.HeWeather5Bean.NowBean now = weather.getHeWeather5().get(0).getNow();
+            String loc = weather.getHeWeather5().get(0).getBasic().getUpdate().getLoc();
+            Weather.HeWeather5Bean.AqiBean aqi = weather.getHeWeather5().get(0).getAqi();
+            if (now != null) {
+                nowView.setVisibility(View.VISIBLE);
+                nowView.setNow(now, loc, aqi);
+            } else {
+                nowView.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 
     //显示生活建议
     private void showSuggestion(Weather weather) {
-        Weather.HeWeather5Bean.SuggestionBean suggestions = weather.getHeWeather5().get(0).getSuggestion();
-        if (suggestions != null) {
-            suggestionView.setVisibility(View.VISIBLE);
-            suggestionView.setSuggestiont(suggestions);
-        } else {
-            suggestionView.setVisibility(View.GONE);
+        try {
+            Weather.HeWeather5Bean.SuggestionBean suggestions = weather.getHeWeather5().get(0).getSuggestion();
+            if (suggestions != null) {
+                suggestionView.setVisibility(View.VISIBLE);
+                suggestionView.setSuggestiont(suggestions);
+            } else {
+                suggestionView.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     //显示后几天的天气
     private void showDayForecast(Weather weather) {
-        List<Weather.HeWeather5Bean.DailyForecastBean> dailyForecast = weather.getHeWeather5().get(0).getDaily_forecast();
-        if (dailyForecast != null) {
-            dfView.setVisibility(View.VISIBLE);
-            dfView.setDailyForecast(dailyForecast);
-        } else {
-            dfView.setVisibility(View.GONE);
+        try {
+            List<Weather.HeWeather5Bean.DailyForecastBean> dailyForecast = weather.getHeWeather5().get(0).getDaily_forecast();
+            if (dailyForecast != null) {
+                dfView.setVisibility(View.VISIBLE);
+                dfView.setDailyForecast(dailyForecast);
+            } else {
+                dfView.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     //显示每小时的天气
     private void showHourForecast(Weather weather) {
-        List<Weather.HeWeather5Bean.HourlyForecastBean> hourlyForecast = weather.getHeWeather5().get(0).getHourly_forecast();
-        if (hourlyForecast != null) {
-            hfView.setVisibility(View.VISIBLE);
-            hfView.setHourlyForecast(hourlyForecast);
-        } else {
-            hfView.setVisibility(View.GONE);
+        try {
+            List<Weather.HeWeather5Bean.HourlyForecastBean> hourlyForecast = weather.getHeWeather5().get(0).getHourly_forecast();
+            if (hourlyForecast != null) {
+                hfView.setVisibility(View.VISIBLE);
+                hfView.setHourlyForecast(hourlyForecast);
+            } else {
+                hfView.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
 
 

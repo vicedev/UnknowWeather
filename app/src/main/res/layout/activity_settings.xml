@@ -52,13 +52,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="10dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:padding="10dp"
                     android:text="通知栏天气"
                     android:textSize="18sp" />
 
@@ -69,63 +73,111 @@
             </LinearLayout>
 
             <TextView
-                android:layout_margin="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="背景"
-                android:textSize="18sp"/>
-            <TextView
-                android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/darker_gray"/>
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="10dp"
+                android:text="背景"
+                android:textSize="18sp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <RelativeLayout
-                    android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
                     <RadioGroup
                         android:id="@+id/rg_bg"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:orientation="vertical">
+
                         <RadioButton
                             android:id="@+id/rb_auto_change"
-                            android:layout_weight="1"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
-                            android:text="自动换背景"/>
+                            android:layout_weight="1"
+                            android:text="自动换背景" />
+
                         <RadioButton
                             android:id="@+id/rb_photo"
-                            android:layout_weight="1"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
-                            android:text="从相册选择"/>
+                            android:layout_weight="1"
+                            android:text="从相册选择" />
+
                         <RadioButton
                             android:id="@+id/rb_pure_color"
-                            android:layout_weight="1"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
-                            android:text="自定义颜色"/>
+                            android:layout_weight="1"
+                            android:text="自定义颜色" />
                     </RadioGroup>
                 </RelativeLayout>
+
                 <RelativeLayout
-                    android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="150dp">
+                    android:layout_height="150dp"
+                    android:layout_weight="1">
+
                     <ImageView
                         android:id="@+id/iv_current_bg"
-                        android:layout_centerInParent="true"
                         android:layout_width="100dp"
                         android:layout_height="150dp"
+                        android:layout_centerInParent="true"
                         android:scaleType="centerCrop"
-                        android:src="@mipmap/bg"/>
+                        android:src="@mipmap/bg" />
                 </RelativeLayout>
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:id="@+id/ll_about_me"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="关于未知天气"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/right" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>

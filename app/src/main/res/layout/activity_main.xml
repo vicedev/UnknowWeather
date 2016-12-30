@@ -4,107 +4,130 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
+
     <ImageView
         android:id="@+id/iv_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop" />
 
-    <com.cjj.MaterialRefreshLayout
-        android:id="@+id/refresh"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ScrollView
-            android:id="@+id/scroll_view"
-            android:scrollbars="none"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/ib_settings"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:background="@null"
+                android:src="@mipmap/setting" />
+
+            <TextView
+                android:id="@+id/tv_city"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=""
+                android:textSize="20sp" />
+
+            <ImageButton
+                android:id="@+id/ib_city_manage"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:src="@mipmap/manage" />
+        </LinearLayout>
+
+        <com.cjj.MaterialRefreshLayout
+            android:id="@+id/refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
+            <ScrollView
+                android:id="@+id/scroll_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:scrollbars="none">
 
-                <LinearLayout
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@android:color/transparent"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent">
 
-                    <ImageButton
-                        android:id="@+id/ib_settings"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:background="@null"
-                        android:src="@mipmap/setting" />
-
-                    <TextView
-                        android:id="@+id/tv_city"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:id="@+id/iv_unknow"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
                         android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text=""
-                        android:textSize="20sp" />
+                        android:src="@mipmap/unknow_big"
+                        android:visibility="gone" />
 
-                    <ImageButton
-                        android:id="@+id/ib_city_manage"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="10dp"
-                        android:background="@null"
-                        android:src="@mipmap/manage" />
-                </LinearLayout>
-                <com.vice.unknowweather.custom.NowView
-                    android:visibility="gone"
-                    android:background="@drawable/main_weather_bg"
-                    android:layout_margin="10dp"
-                    android:padding="10dp"
-                    android:id="@+id/now_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-                </com.vice.unknowweather.custom.NowView>
+                        <com.vice.unknowweather.custom.NowView
+                            android:id="@+id/now_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/main_weather_bg"
+                            android:padding="10dp"
+                            android:visibility="gone">
 
-                <com.vice.unknowweather.custom.HourForecastView
-                    android:visibility="gone"
-                    android:layout_margin="10dp"
-                    android:padding="10dp"
-                    android:background="@drawable/main_weather_bg"
-                    android:id="@+id/hf_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                        </com.vice.unknowweather.custom.NowView>
 
-                </com.vice.unknowweather.custom.HourForecastView>
-                <com.vice.unknowweather.custom.DayForecastView
-                    android:visibility="gone"
-                    android:layout_margin="10dp"
-                    android:padding="10dp"
-                    android:background="@drawable/main_weather_bg"
-                    android:id="@+id/df_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                        <com.vice.unknowweather.custom.HourForecastView
+                            android:id="@+id/hf_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/main_weather_bg"
+                            android:padding="10dp"
+                            android:visibility="gone">
 
-                </com.vice.unknowweather.custom.DayForecastView>
+                        </com.vice.unknowweather.custom.HourForecastView>
 
-                <com.vice.unknowweather.custom.SuggestionView
-                    android:visibility="gone"
-                    android:layout_margin="10dp"
-                    android:padding="10dp"
-                    android:background="@drawable/main_weather_bg"
-                    android:id="@+id/suggestion_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                        <com.vice.unknowweather.custom.DayForecastView
+                            android:id="@+id/df_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/main_weather_bg"
+                            android:padding="10dp"
+                            android:visibility="gone">
 
-                </com.vice.unknowweather.custom.SuggestionView>
+                        </com.vice.unknowweather.custom.DayForecastView>
 
-            </LinearLayout>
-        </ScrollView>
+                        <com.vice.unknowweather.custom.SuggestionView
+                            android:id="@+id/suggestion_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/main_weather_bg"
+                            android:padding="10dp"
+                            android:visibility="gone">
 
-    </com.cjj.MaterialRefreshLayout>
+                        </com.vice.unknowweather.custom.SuggestionView>
+
+                    </LinearLayout>
+                </FrameLayout>
+            </ScrollView>
+
+        </com.cjj.MaterialRefreshLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

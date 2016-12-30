@@ -2,9 +2,5 @@
     {
         "merged": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_color_highlight_material.xml",
         "source": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\color-v23\\abc_color_highlight_material.xml"
-    },
-    {
-        "merged": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v23\\abc_color_highlight_material.xml",
-        "source": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\color-v23\\abc_color_highlight_material.xml"
     }
 ]

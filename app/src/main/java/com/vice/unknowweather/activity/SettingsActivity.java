@@ -13,7 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -55,6 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
     };
     private SwitchButton sbNotificationWeather;
+    private LinearLayout llAboutMe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,15 +68,16 @@ public class SettingsActivity extends AppCompatActivity {
         rbPureColor = (RadioButton) findViewById(R.id.rb_pure_color);
         ivCurrentBg = (ImageView) findViewById(R.id.iv_current_bg);
         sbNotificationWeather = (SwitchButton) findViewById(R.id.sb_notification_weather);
+        llAboutMe = (LinearLayout) findViewById(R.id.ll_about_me);
 
 
         sbNotificationWeather.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(SwitchButton view, boolean isChecked) {
-                Intent intent=new Intent(SettingsActivity.this, NotificationWeatherService.class);
-                if (isChecked){
+                Intent intent = new Intent(SettingsActivity.this, NotificationWeatherService.class);
+                if (isChecked) {
                     startService(intent);
-                }else{
+                } else {
                     stopService(intent);
                 }
                 SPUtils.setOpenNotificationWeather(isChecked);
@@ -123,28 +125,48 @@ public class SettingsActivity extends AppCompatActivity {
                                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                                 .skipMemoryCache(true)
                                 .into(ivCurrentBg);
-                        if (currentBgWay.equals(Constants.BG_PHOTO)) {
-                            return;
-                        }
-                        selectPhoto();
+
 //                        ToastUtils.showShort("photo");
                         SPUtils.setCurrentBgWay(Constants.BG_PHOTO);
 
                         break;
 
                     case R.id.rb_pure_color:
-                        int color=SPUtils.getCustomColorBg();
-                        ColorDrawable colorDrawable=new ColorDrawable(color);
+                        int color = SPUtils.getCustomColorBg();
+                        ColorDrawable colorDrawable = new ColorDrawable(color);
+                        Glide.clear(ivCurrentBg);
                         ivCurrentBg.setImageDrawable(colorDrawable);
-                        if (currentBgWay.equals(Constants.BG_PURE_COLOR)) {
-                            return;
-                        }
-                        selectColor(color);
+
 //                        ToastUtils.showShort("color");
                         SPUtils.setCurrentBgWay(Constants.BG_PURE_COLOR);
 
                         break;
                 }
+            }
+        });
+
+        ivCurrentBg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String currentBgWay = SPUtils.getCurrentBgWay();
+                switch (currentBgWay) {
+                    case Constants.BG_PHOTO:
+                        selectPhoto();
+                        break;
+                    case Constants.BG_PURE_COLOR:
+                        int color = SPUtils.getCustomColorBg();
+                        selectColor(color);
+                        break;
+
+                }
+            }
+        });
+
+        llAboutMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(SettingsActivity.this,ContactMeActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -160,8 +182,8 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         //默认通知栏是否开启
-        boolean open=SPUtils.getOpenNotificationWeather();
-        sbNotificationWeather.setChecked(open?true:false);
+        boolean open = SPUtils.getOpenNotificationWeather();
+        sbNotificationWeather.setChecked(open ? true : false);
 
 
     }
@@ -173,7 +195,7 @@ public class SettingsActivity extends AppCompatActivity {
         picker.setOnColorPickListener(new ColorPicker.OnColorPickListener() {
             @Override
             public void onColorPicked(int pickedColor) {
-                ColorDrawable colorDrawable=new ColorDrawable(pickedColor);
+                ColorDrawable colorDrawable = new ColorDrawable(pickedColor);
                 ivCurrentBg.setImageDrawable(colorDrawable);
                 ToastUtils.showShort(ConvertUtils.toColorString(pickedColor));
                 SPUtils.setCustomColorBg(pickedColor);
@@ -227,7 +249,7 @@ public class SettingsActivity extends AppCompatActivity {
                 protected Void doInBackground(Void... params) {
                     for (String path : pathList) {
                         Bitmap bmp = BitmapFactory.decodeFile(path);
-                        BitmapUtils.saveImgToDisk(SettingsActivity.this,"bg",bmp);
+                        BitmapUtils.saveImgToDisk(SettingsActivity.this, "bg", bmp);
                     }
                     return null;
                 }
@@ -236,7 +258,7 @@ public class SettingsActivity extends AppCompatActivity {
                 protected void onPostExecute(Void aVoid) {
                     super.onPostExecute(aVoid);
                     showProgress(false);
-                    String path = getExternalFilesDir("bg") + File.separator + "bg";
+                    String path = getFilesDir() + File.separator + "bg";
 //                    Bitmap bmp = BitmapUtils.getDiskBitmap(getFilesDir() + File.separator + "bg");
                     Glide.with(SettingsActivity.this).load(path).error(R.mipmap.bg)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)

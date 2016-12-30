@@ -1,9 +1,5 @@
 [
     {
-        "merged": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\res\\merged\\release\\anim\\abc_fade_out.xml",
-        "source": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\anim\\abc_fade_out.xml"
-    },
-    {
         "merged": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\res\\merged\\release\\anim\\abc_slide_in_bottom.xml",
         "source": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\anim\\abc_slide_in_bottom.xml"
     },
@@ -12,24 +8,8 @@
         "source": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\anim\\abc_slide_out_bottom.xml"
     },
     {
-        "merged": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\res\\merged\\release\\anim\\abc_popup_enter.xml",
-        "source": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\anim\\abc_popup_enter.xml"
-    },
-    {
-        "merged": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\res\\merged\\release\\anim\\abc_fade_in.xml",
-        "source": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\anim\\abc_fade_in.xml"
-    },
-    {
         "merged": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\res\\merged\\release\\anim\\abc_shrink_fade_out_from_bottom.xml",
         "source": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\anim\\abc_shrink_fade_out_from_bottom.xml"
-    },
-    {
-        "merged": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\res\\merged\\release\\anim\\abc_popup_exit.xml",
-        "source": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\anim\\abc_popup_exit.xml"
-    },
-    {
-        "merged": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\res\\merged\\release\\anim\\abc_slide_in_top.xml",
-        "source": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\anim\\abc_slide_in_top.xml"
     },
     {
         "merged": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\res\\merged\\release\\anim\\abc_grow_fade_in_from_bottom.xml",
@@ -40,32 +20,12 @@
         "source": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\anim\\abc_fade_in.xml"
     },
     {
-        "merged": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\res\\merged\\release\\anim\\abc_slide_in_bottom.xml",
-        "source": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\anim\\abc_slide_in_bottom.xml"
-    },
-    {
         "merged": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\res\\merged\\release\\anim\\abc_fade_out.xml",
         "source": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\anim\\abc_fade_out.xml"
     },
     {
-        "merged": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\res\\merged\\release\\anim\\abc_slide_out_bottom.xml",
-        "source": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\anim\\abc_slide_out_bottom.xml"
-    },
-    {
-        "merged": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\res\\merged\\release\\anim\\abc_shrink_fade_out_from_bottom.xml",
-        "source": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\anim\\abc_shrink_fade_out_from_bottom.xml"
-    },
-    {
         "merged": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\res\\merged\\release\\anim\\abc_popup_enter.xml",
         "source": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\anim\\abc_popup_enter.xml"
-    },
-    {
-        "merged": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\res\\merged\\release\\anim\\abc_grow_fade_in_from_bottom.xml",
-        "source": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\anim\\abc_grow_fade_in_from_bottom.xml"
-    },
-    {
-        "merged": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\res\\merged\\release\\anim\\abc_slide_out_top.xml",
-        "source": "H:\\AndroidStudioProjects\\Android-MaterialRefreshLayout\\library\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\anim\\abc_slide_out_top.xml"
     },
     {
         "merged": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\res\\merged\\release\\anim\\abc_popup_exit.xml",
