@@ -1,6 +1,10 @@
 package com.vice.unknowweather.activity;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +24,14 @@ import com.vice.unknowweather.adapter.CityPickHotCityAdapter;
 import com.vice.unknowweather.global.Constants;
 import com.vice.unknowweather.utils.ToastUtils;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
+
+@RuntimePermissions
 public class CityPickActivity extends BaseActivity {
 
     private BDLocationListener myListener = new MyLocationListener();
@@ -29,7 +41,7 @@ public class CityPickActivity extends BaseActivity {
     private TextView tvLocateCity;
     private TextView tvReLocate;
     private ImageButton ibBack;
-    private boolean isLocating = true;
+    private boolean isLocating = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +80,7 @@ public class CityPickActivity extends BaseActivity {
             public void onClick(View v) {
                 //重新定位位置
                 if (tvReLocate.getText().toString().equals("（点击重新定位）")) {
-                    tvReLocate.setText("（正在定位中...）");
-                    startLocate();
-
+                    requestLocate();
                 }
             }
         });
@@ -99,7 +109,7 @@ public class CityPickActivity extends BaseActivity {
         });
 
 
-        startLocate();
+        requestLocate();
 
 
     }
@@ -107,7 +117,6 @@ public class CityPickActivity extends BaseActivity {
 
     //开始定位
     private void startLocate() {
-
         App.mLocationClient.registerLocationListener(myListener);    //注册监听函数
         App.mLocationClient.start();
         tvReLocate.setText("（正在定位中...）");
@@ -120,6 +129,41 @@ public class CityPickActivity extends BaseActivity {
         App.mLocationClient.unRegisterLocationListener(myListener);
         tvReLocate.setText("（点击重新定位）");
         isLocating = false;
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private void requestLocate() {
+        CityPickActivityPermissionsDispatcher.openLocateWithCheck(this);
+    }
+
+    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE})
+    void openLocate() {
+        startLocate();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        CityPickActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @OnShowRationale({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE})
+    void showRationale(final PermissionRequest request) {
+        ToastUtils.showLong("请允许所有权限，这样才可以自动定位");
+        request.proceed();
+    }
+
+    @OnPermissionDenied({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE})
+    void permissionDenied() {
+        tvLocateCity.setText("定位失败");
+        tvReLocate.setText("（点击重新定位）");
+
+    }
+
+    @OnNeverAskAgain({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE})
+    void neverAskAgain() {
+        tvReLocate.setText("");
+        ToastUtils.showLong("在 设置--应用--未知天气--权限 中可以手动打开权限");
     }
 
     class MyLocationListener implements BDLocationListener {
@@ -144,4 +188,6 @@ public class CityPickActivity extends BaseActivity {
         super.onDestroy();
         stopLocate();
     }
+
+
 }

@@ -1,9 +1,12 @@
 package com.vice.unknowweather.activity;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
@@ -37,6 +40,14 @@ import com.vice.unknowweather.utils.ToastUtils;
 import java.io.File;
 import java.util.List;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
+
+@RuntimePermissions
 public class MainActivity extends BaseActivity {
     private static final String TAG = "vvvLocation";
 
@@ -155,7 +166,7 @@ public class MainActivity extends BaseActivity {
 
         boolean isFirstStart = checkIsFirstStart();
         if (isFirstStart) {
-            startLocate();
+            requestLocate();
         } else {
             String cityName = SPUtils.getCurrentCity();
             tvCity.setText(cityName);
@@ -201,6 +212,7 @@ public class MainActivity extends BaseActivity {
                 refreshLayout.finishRefreshing();
             }
         });
+        SPUtils.setFirstStart(false);
     }
 
 //    private void finishRefreshing(final Weather weather) {
@@ -325,6 +337,42 @@ public class MainActivity extends BaseActivity {
         App.mLocationClient.stop();
         App.mLocationClient.unRegisterLocationListener(myListener);
     }
+    @TargetApi(Build.VERSION_CODES.M)
+    private void requestLocate() {
+        MainActivityPermissionsDispatcher.openLocateWithCheck(this);
+    }
+
+    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE})
+    void openLocate() {
+        startLocate();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @OnShowRationale({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE})
+    void showRationale(final PermissionRequest request) {
+        request.proceed();
+        ToastUtils.showLong("请允许所有权限，这样才可以自动定位");
+    }
+
+    @OnPermissionDenied({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE})
+    void permissionDenied() {
+        String cityName = SPUtils.getCurrentCity();
+        tvCity.setText(cityName);
+
+        //获取并显示天气
+        getAndshowWeather(cityName);
+        ToastUtils.showLong("自动定位失败,请允许所有权限");
+    }
+
+    @OnNeverAskAgain({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE})
+    void neverAskAgain() {
+        ToastUtils.showLong("在 设置--应用--未知天气--权限 中可以手动打开权限");
+    }
 
 
     class MyLocationListener implements BDLocationListener {
@@ -373,4 +421,6 @@ public class MainActivity extends BaseActivity {
         stopLocate();
         WeatherModel.getInstance().cancelByTag(this);
     }
+
+
 }

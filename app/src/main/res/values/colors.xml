@@ -6,5 +6,6 @@
 
     <color name="weather_bg">#7733b5e5</color>
     <color name="remoteviews_text_color">#555555</color>
+    <color name="transparentBlack">#22000000</color>
 
 </resources>

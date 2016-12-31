@@ -32,25 +32,20 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity
-            android:name=".activity.MainActivity"
-            android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         //百度定位相关
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" />
-
+        //key:开发者申请的Key
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="eGXyuMhKaBBQxYvFc5NTiSRWZp9VrCep" />
-        //key:开发者申请的Key
+
+        <activity
+            android:name=".activity.MainActivity"
+            android:launchMode="singleTask"></activity>
         <activity android:name=".activity.CityManageActivity" />
         <activity android:name=".activity.SettingsActivity" />
         <activity
@@ -63,7 +58,14 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".activity.ContactMeActivity"></activity>
+        <activity android:name=".activity.ContactMeActivity" />
+        <activity android:name=".activity.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

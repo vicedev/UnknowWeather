@@ -1,5 +1,7 @@
 package com.vice.unknowweather.activity;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +10,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -26,18 +30,27 @@ import com.vice.unknowweather.model.BgModel;
 import com.vice.unknowweather.service.NotificationWeatherService;
 import com.vice.unknowweather.utils.BitmapUtils;
 import com.vice.unknowweather.utils.SPUtils;
+import com.vice.unknowweather.utils.ScreenUtils;
 import com.vice.unknowweather.utils.ToastUtils;
 import com.yuyh.library.imgsel.ImageLoader;
 import com.yuyh.library.imgsel.ImgSelActivity;
 import com.yuyh.library.imgsel.ImgSelConfig;
 
 import java.io.File;
+import java.lang.annotation.Target;
 import java.util.List;
 
 import cn.qqtheme.framework.picker.ColorPicker;
 import cn.qqtheme.framework.util.ConvertUtils;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
 
-public class SettingsActivity extends AppCompatActivity {
+@RuntimePermissions
+public class SettingsActivity extends BaseActivity {
 
     private ImageButton ibBack;
     private RadioGroup rgBg;
@@ -151,7 +164,7 @@ public class SettingsActivity extends AppCompatActivity {
                 String currentBgWay = SPUtils.getCurrentBgWay();
                 switch (currentBgWay) {
                     case Constants.BG_PHOTO:
-                        selectPhoto();
+                        requestSelectPhoto();
                         break;
                     case Constants.BG_PURE_COLOR:
                         int color = SPUtils.getCustomColorBg();
@@ -205,24 +218,25 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void selectPhoto() {
+        int[] screenWidthAndHeight = ScreenUtils.getScreenWidthAndHeight(this);
         ImgSelConfig config = new ImgSelConfig.Builder(this, loader)
                 // 是否多选
                 .multiSelect(false)
-                .btnText("Confirm")
+                .btnText("")
                 // 确定按钮背景色
                 //.btnBgColor(Color.parseColor(""))
                 // 确定按钮文字颜色
                 .btnTextColor(Color.WHITE)
                 // 使用沉浸式状态栏
-                .statusBarColor(Color.parseColor("#3F51B5"))
+                .statusBarColor(Color.parseColor("#22000000"))
                 // 返回图标ResId
                 .backResId(R.mipmap.back)
                 .title("Images")
-                .titleColor(Color.WHITE)
-                .titleBgColor(Color.parseColor("#3F51B5"))
+                .titleColor(Color.BLACK)
+                .titleBgColor(Color.parseColor("#22000000"))
                 .allImagesText("All Images")
-                .cropSize(1, 1, 200, 200)
-                .needCrop(false)
+                .cropSize( screenWidthAndHeight[0],screenWidthAndHeight[1],screenWidthAndHeight[0],screenWidthAndHeight[1])
+                .needCrop(true)
                 // 第一个是否显示相机
                 .needCamera(true)
                 // 最大选择图片数量
@@ -258,17 +272,22 @@ public class SettingsActivity extends AppCompatActivity {
                 protected void onPostExecute(Void aVoid) {
                     super.onPostExecute(aVoid);
                     showProgress(false);
-                    String path = getFilesDir() + File.separator + "bg";
-//                    Bitmap bmp = BitmapUtils.getDiskBitmap(getFilesDir() + File.separator + "bg");
-                    Glide.with(SettingsActivity.this).load(path).error(R.mipmap.bg)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .skipMemoryCache(true).
-                            into(ivCurrentBg);
+                    loadFileBg();
                 }
             }.execute();
 
         }
     }
+
+    private void loadFileBg() {
+        String path = getFilesDir() + File.separator + "bg";
+//                    Bitmap bmp = BitmapUtils.getDiskBitmap(getFilesDir() + File.separator + "bg");
+        Glide.with(SettingsActivity.this).load(path).error(R.mipmap.bg)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true).
+                into(ivCurrentBg);
+    }
+
 
     private void showProgress(boolean show) {
         if (show) {
@@ -288,5 +307,37 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         BgModel.getInstance().cancelByTag(this);
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private void requestSelectPhoto() {
+        SettingsActivityPermissionsDispatcher.openSelectPhotoWithCheck(SettingsActivity.this);
+    }
+
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    void openSelectPhoto() {
+        selectPhoto();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        SettingsActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @OnShowRationale(Manifest.permission.READ_EXTERNAL_STORAGE)
+    void showRationale(final PermissionRequest request) {
+        ToastUtils.showLong("请允许权限");
+        request.proceed();
+    }
+
+    @OnPermissionDenied(Manifest.permission.READ_EXTERNAL_STORAGE)
+    void permissionDenied() {
+        loadFileBg();
+    }
+
+    @OnNeverAskAgain(Manifest.permission.READ_EXTERNAL_STORAGE)
+    void neverAskAgain() {
+        ToastUtils.showLong("在 设置--应用--未知天气--权限 中可以手动打开权限");
     }
 }
