@@ -81,7 +81,7 @@
             android:id="@+id/tv_relocate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="（点击重新定位）"/>
+            android:text=""/>
     </LinearLayout>
     <TextView
         android:textColor="@android:color/black"

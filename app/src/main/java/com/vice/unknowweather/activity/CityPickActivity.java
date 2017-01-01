@@ -79,7 +79,7 @@ public class CityPickActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //重新定位位置
-                if (tvReLocate.getText().toString().equals("（点击重新定位）")) {
+                if (tvReLocate.getText().toString().equals("（重新定位）")) {
                     requestLocate();
                 }
             }
@@ -127,7 +127,7 @@ public class CityPickActivity extends BaseActivity {
     private void stopLocate() {
         App.mLocationClient.stop();
         App.mLocationClient.unRegisterLocationListener(myListener);
-        tvReLocate.setText("（点击重新定位）");
+        tvReLocate.setText("（重新定位）");
         isLocating = false;
     }
 

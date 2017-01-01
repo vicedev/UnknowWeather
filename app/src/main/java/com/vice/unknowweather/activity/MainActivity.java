@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
@@ -93,6 +94,8 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
+//                Intent i=new Intent("com.vice.unknowweather.START_NOTIFICATION_ERATHER_SERVICE");
+//                sendBroadcast(i);
             }
         });
 
@@ -162,7 +165,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void refresh() {
-//        startTime = SystemClock.elapsedRealtime();
+        startTime = SystemClock.elapsedRealtime();
 
         boolean isFirstStart = checkIsFirstStart();
         if (isFirstStart) {
@@ -199,42 +202,51 @@ public class MainActivity extends BaseActivity {
             public void onSuccess(Weather weather) {
                 //天气存入数据库
                 CityWeatherModel.getInstance().insertCityWeather(cityName, weather);
-                showWeather(weather);
+//                showWeather(weather);
                 //结束刷新状态
-                refreshLayout.finishRefreshing();
+//                refreshLayout.finishRefreshing();
+                finishRefreshing(weather);
 
             }
 
             @Override
             public void onFailure() {
-                ToastUtils.showShort("获取天气信息失败");
+//                ToastUtils.showShort("获取天气信息失败");
                 //结束刷新状态
-                refreshLayout.finishRefreshing();
+//                refreshLayout.finishRefreshing();
+                finishRefreshing(null);
             }
         });
         SPUtils.setFirstStart(false);
     }
 
-//    private void finishRefreshing(final Weather weather) {
-//        long endTime = SystemClock.elapsedRealtime();
-//        long deltTime=endTime-startTime;
-//        long expectTime=1*1000;
-//        long delayTime=expectTime-deltTime;
-//        if ((deltTime)<expectTime){
-//            refreshLayout.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    refreshLayout.finishRefreshing();
-//                    //显示天气
-//                    if (weather!=null){
-//                        showWeather(weather);
-//                    }
-//                }
-//            }, delayTime );
-//        }else{
-//            refreshLayout.finishRefreshing();
-//        }
-//    }
+    private void finishRefreshing(final Weather weather) {
+        long endTime = SystemClock.elapsedRealtime();
+        long deltTime=endTime-startTime;
+        long expectTime=1*1000;
+        long delayTime=expectTime-deltTime;
+        if ((deltTime)<expectTime){
+            refreshLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    refreshLayout.finishRefreshing();
+                    //显示天气
+                    if (weather!=null){
+                        showWeather(weather);
+                    }else{
+                        ToastUtils.showShort("获取天气信息失败");
+                    }
+                }
+            }, delayTime );
+        }else{
+            refreshLayout.finishRefreshing();
+            if (weather!=null){
+                showWeather(weather);
+            }else{
+                ToastUtils.showShort("获取天气信息失败");
+            }
+        }
+    }
 
     //没有天气信息的时候隐藏显示天气的控件
     private void hideWeatherView() {
@@ -411,6 +423,7 @@ public class MainActivity extends BaseActivity {
                 tvCity.setText(cityName);
                 SPUtils.setCurrentCity(cityName);
                 getAndshowWeather(cityName);
+//                refreshLayout.autoRefresh();
             }
         }
     }

@@ -10,8 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
-
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
         <com.cjj.MaterialRefreshLayout
             android:id="@+id/refresh"
             android:layout_width="match_parent"
@@ -39,9 +44,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="?attr/actionBarSize" />
 
                         <com.vice.unknowweather.custom.NowView
                             android:id="@+id/now_view"
@@ -92,6 +94,7 @@
             </ScrollView>
 
         </com.cjj.MaterialRefreshLayout>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"

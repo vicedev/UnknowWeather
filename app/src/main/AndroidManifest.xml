@@ -32,7 +32,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
         //百度定位相关
         <service
             android:name="com.baidu.location.f"
@@ -45,7 +44,7 @@
 
         <activity
             android:name=".activity.MainActivity"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask" />
         <activity android:name=".activity.CityManageActivity" />
         <activity android:name=".activity.SettingsActivity" />
         <activity
@@ -66,6 +65,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".receiver.StartNotificationWeatherReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.vice.unknowweather.START_NOTIFICATION_ERATHER_SERVICE"></action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

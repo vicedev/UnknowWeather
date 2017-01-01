@@ -35,11 +35,12 @@ public class NotificationWeatherService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        System.out.println("vvv"+"onCreate");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        System.out.println("vvv"+"onStartCommand");
         currentCity = SPUtils.getCurrentCity();
         updateWeather();
 
@@ -122,10 +123,18 @@ public class NotificationWeatherService extends Service {
         PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
 
         Notification notification = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.weather_small)
                 .setCustomContentView(remoteViews)
                 .setContentIntent(pi)
                 .build();
         startForeground(1, notification);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopForeground(true);
+        Intent intent=new Intent("com.vice.unknowweather.START_NOTIFICATION_ERATHER_SERVICE");
+        sendBroadcast(intent);
     }
 }
