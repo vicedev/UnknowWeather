@@ -210,7 +210,6 @@ public class SettingsActivity extends BaseActivity {
             public void onColorPicked(int pickedColor) {
                 ColorDrawable colorDrawable = new ColorDrawable(pickedColor);
                 ivCurrentBg.setImageDrawable(colorDrawable);
-                ToastUtils.showShort(ConvertUtils.toColorString(pickedColor));
                 SPUtils.setCustomColorBg(pickedColor);
             }
         });

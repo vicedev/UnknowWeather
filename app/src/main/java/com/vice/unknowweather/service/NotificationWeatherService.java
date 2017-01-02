@@ -35,12 +35,10 @@ public class NotificationWeatherService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        System.out.println("vvv"+"onCreate");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        System.out.println("vvv"+"onStartCommand");
         currentCity = SPUtils.getCurrentCity();
         updateWeather();
 

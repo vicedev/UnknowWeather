@@ -104,12 +104,12 @@
         "source": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\layout\\abc_popup_menu_item_layout.xml"
     },
     {
-        "merged": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\abc_select_dialog_material.xml",
-        "source": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\layout\\abc_select_dialog_material.xml"
-    },
-    {
         "merged": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\abc_search_dropdown_item_icons_2line.xml",
         "source": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\layout\\abc_search_dropdown_item_icons_2line.xml"
+    },
+    {
+        "merged": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\abc_select_dialog_material.xml",
+        "source": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.1.1\\res\\layout\\abc_select_dialog_material.xml"
     },
     {
         "merged": "H:\\AndroidStudioProjects\\UnknowWeather\\refreshLibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\select_dialog_singlechoice_material.xml",

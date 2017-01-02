@@ -36,7 +36,7 @@ dependencies {
     compile 'com.lzy.net:okgo:+'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'org.litepal.android:core:1.4.1'
-    compile project(':refreshLibrary')
+    compile project(':refreshLibrary')//https://github.com/android-cjj/Android-MaterialRefreshLayout
     compile 'com.android.support:design:24.2.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.zcweng:switch-button:0.0.1@aar'//https://github.com/zcweng/SwitchButton

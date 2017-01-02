@@ -25,6 +25,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -44,11 +46,17 @@
 
         <activity
             android:name=".activity.MainActivity"
-            android:launchMode="singleTask" />
-        <activity android:name=".activity.CityManageActivity" />
-        <activity android:name=".activity.SettingsActivity" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.CityManageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.CityPickActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".activity.BaseActivity" />
 
@@ -57,8 +65,12 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".activity.ContactMeActivity" />
-        <activity android:name=".activity.SplashActivity">
+        <activity
+            android:name=".activity.ContactMeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -71,7 +83,10 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="com.vice.unknowweather.START_NOTIFICATION_ERATHER_SERVICE"></action>
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </receiver>
     </application>

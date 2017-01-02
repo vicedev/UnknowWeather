@@ -2,12 +2,14 @@ package com.vice.unknowweather.activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
@@ -94,8 +96,6 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
-//                Intent i=new Intent("com.vice.unknowweather.START_NOTIFICATION_ERATHER_SERVICE");
-//                sendBroadcast(i);
             }
         });
 
@@ -351,7 +351,22 @@ public class MainActivity extends BaseActivity {
     }
     @TargetApi(Build.VERSION_CODES.M)
     private void requestLocate() {
-        MainActivityPermissionsDispatcher.openLocateWithCheck(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("提示")
+                    .setMessage("请允许后面请求的所有权限，这样才可以自动定位")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            MainActivityPermissionsDispatcher.openLocateWithCheck(MainActivity.this);
+                        }
+                    })
+                    .setCancelable(false)
+                    .create()
+                    .show();
+        }else{
+            MainActivityPermissionsDispatcher.openLocateWithCheck(MainActivity.this);
+        }
     }
 
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE})
